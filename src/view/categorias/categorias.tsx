@@ -3,23 +3,25 @@
 // Tela de Categoria: Listagem de Itens por Categoria selecionada
 // ============================================================================
 
+import { CategoryViewModel } from "@/viewmodel/categoriesViewModel";
 import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    FlatList,
-    Image,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { simularConsultaProdutosPorCategoria } from "../../data/mockDatabase";
 
 export default function CategoryScreen() {
-  const router = useRouter();
+  const [carregarProdutos]=CategoryViewModel.useDataSource()
+  const [push,back]=CategoryViewModel.useRooter()
+
   const { id } = useLocalSearchParams<{ id: string }>();
 
   // Estados locais controlados na própria View (Sem separação de ViewModel)
@@ -32,22 +34,7 @@ export default function CategoryScreen() {
 
   useEffect(() => {
     // Consulta direta com atraso simulado de banco de dados
-    async function carregarProdutos() {
-      if (!id) return;
-      try {
-        setCarregando(true);
-        const resultado = await simularConsultaProdutosPorCategoria(
-          Array.isArray(id) ? id[0] : id,
-        );
-        setProdutos(resultado);
-      } catch (erro) {
-        console.error("Erro ao buscar produtos da categoria:", erro);
-      } finally {
-        setCarregando(false);
-      }
-    }
-
-    carregarProdutos();
+    carregarProdutos(setCarregando,setProdutos);
   }, [id]);
 
   // Função auxiliar de formatação de moeda dentro do arquivo da tela
@@ -65,7 +52,7 @@ export default function CategoryScreen() {
             <TouchableOpacity
               activeOpacity={0.7}
               style={styles.botaoVoltar}
-              onPress={() => router.back()}
+              onPress={() => back()}
             >
               <Ionicons name="chevron-back" size={24} color="#ffffff" />
               <Text style={styles.textoVoltar}>Início</Text>
@@ -103,7 +90,7 @@ export default function CategoryScreen() {
             <TouchableOpacity
               activeOpacity={0.85}
               style={styles.cardItem}
-              onPress={() => router.push(`/item/${item.id}` as any)}
+              onPress={() => push(`/item/${item.id}` as any)}
             >
               {/* Miniatura do Produto */}
               <Image
@@ -231,3 +218,7 @@ const styles = StyleSheet.create({
     color: "#8c959f",
   },
 });
+function carregarProdutos() {
+  throw new Error("Function not implemented.");
+}
+

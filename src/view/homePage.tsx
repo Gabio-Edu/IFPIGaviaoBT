@@ -3,43 +3,30 @@
 // Tela Inicial: Apresentação das Categorias (Comidas e Bebidas)
 // ============================================================================
 
-import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { HomeViewModel } from "@/viewmodel/homeViewModel";
 import { useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    Image,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { simularConsultaCategorias } from "../data/mockDatabase";
+import { Item } from "./components";
 
 export default function HomeScreen() {
-  const router = useRouter();
-
+  const [getDataState]=HomeViewModel.useDataSource()
   // Estados gerenciados diretamente na View (Sem ViewModel)
   const [carregando, setCarregando] = useState<boolean>(true);
   const [categorias, setCategorias] = useState<any[]>([]);
 
   useEffect(() => {
     // Busca direta do banco simulado com delay assíncrono
-    async function carregarDados() {
-      try {
-        setCarregando(true);
-        const resultado = await simularConsultaCategorias();
-        setCategorias(resultado);
-      } catch (error) {
-        console.error("Erro ao carregar categorias:", error);
-      } finally {
-        setCarregando(false);
-      }
-    }
+    getDataState(setCarregando,setCategorias)
 
-    carregarDados();
+    
   }, []);
 
   return (
@@ -79,31 +66,7 @@ export default function HomeScreen() {
           </View>
         ) : (
           <View style={styles.gridCategorias}>
-            {categorias.map((cat) => (
-              <TouchableOpacity
-                key={cat.id}
-                activeOpacity={0.88}
-                style={[styles.cardCategoria, { borderColor: cat.corBorda }]}
-                onPress={() => router.push(`/category/${cat.id}` as any)}
-              >
-                {/* Imagem de Capa da Categoria */}
-                <Image
-                  source={cat.imagem}
-                  style={styles.imagemCategoria}
-                  resizeMode="cover"
-                />
-
-                {/* Rodapé do Card com Nome e Seta */}
-                <View style={styles.rodapeCard}>
-                  <Text style={styles.nomeCategoria}>{cat.nome}</Text>
-                  <Ionicons
-                    name="arrow-forward"
-                    size={20}
-                    color={cat.corSeta}
-                  />
-                </View>
-              </TouchableOpacity>
-            ))}
+            {categorias.map((cat) => <Item key={cat.id} cat={cat}/>)}
           </View>
         )}
       </ScrollView>

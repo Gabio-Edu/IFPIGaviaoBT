@@ -1,2 +1,2 @@
-import ItemDetailScreen from "../../view/item/[id]";
+import ItemDetailScreen from "../../view/item/ItemDetails";
 export default ItemDetailScreen;

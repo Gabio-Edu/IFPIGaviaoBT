@@ -1,10 +1,10 @@
 import {
-    simularConsultaProdutoPorId,
-    simularConsultaProdutosPorCategoria,
+  simularConsultaProdutoPorId,
+  simularConsultaProdutosPorCategoria,
 } from "@/data/mockDatabase";
 import IItem from "../entities/IItem";
 
-class RepositoryItem {
+export class ItemDataSource {
   constructor() {}
   static async GetItemsByCategory(categoria: string): Promise<IItem[]> {
     return await simularConsultaProdutosPorCategoria(categoria);

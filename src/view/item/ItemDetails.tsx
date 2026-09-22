@@ -3,8 +3,9 @@
 // Tela de Detalhes do Produto: Apresentação completa e controle de quantidade
 // ============================================================================
 
+import { ItemViewModel } from "@/viewmodel/itemViewModel";
 import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -16,10 +17,10 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { simularConsultaProdutoPorId } from "../../data/mockDatabase";
 
 export default function ItemDetailScreen() {
-  const router = useRouter();
+  const [backPage]=ItemViewModel.useRooter()
+  const [getItem]=ItemViewModel.useDataSource()
   const { id } = useLocalSearchParams<{ id: string }>();
 
   // Estados locais controlados diretamente na tela (Sem ViewModel)
@@ -29,21 +30,7 @@ export default function ItemDetailScreen() {
 
   useEffect(() => {
     // Consulta direta ao banco de dados com simulação de delay
-    async function carregarDetalhes() {
-      if (!id) return;
-      try {
-        setCarregando(true);
-        const prodId = Array.isArray(id) ? id[0] : id;
-        const resultado = await simularConsultaProdutoPorId(prodId);
-        setProduto(resultado);
-      } catch (erro) {
-        console.error("Erro ao buscar detalhes do produto:", erro);
-      } finally {
-        setCarregando(false);
-      }
-    }
-
-    carregarDetalhes();
+    getItem(setCarregando,setProduto)
   }, [id]);
 
   // Lógica de negócio de incremento/decremento embutida diretamente na View
@@ -70,7 +57,7 @@ export default function ItemDetailScreen() {
             <TouchableOpacity
               activeOpacity={0.7}
               style={styles.botaoVoltar}
-              onPress={() => router.back()}
+              onPress={backPage}
             >
               <Ionicons name="chevron-back" size={24} color="#ffffff" />
               <Text style={styles.textoVoltar}>Voltar</Text>
@@ -179,7 +166,7 @@ export default function ItemDetailScreen() {
             <TouchableOpacity
               activeOpacity={0.88}
               style={styles.btnVoltarCardapio}
-              onPress={() => router.back()}
+              onPress={backPage}
             >
               <Text style={styles.textoBtnVoltar}>Voltar ao Cardápio</Text>
             </TouchableOpacity>
@@ -419,3 +406,7 @@ const styles = StyleSheet.create({
     color: "#dc3545",
   },
 });
+function carregarDetalhes() {
+  throw new Error("Function not implemented.");
+}
+
