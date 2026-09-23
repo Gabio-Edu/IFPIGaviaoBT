@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { simularConsultaProdutoPorId } from "../data/mockDatabase";
+import { Product } from "@/model/entities/Product";
 
 export function useItemViewModel(id: string | string[] | undefined) {
   const [carregando, setCarregando] = useState<boolean>(true);
-  const [produto, setProduto] = useState<any>(null);
+  const [produto, setProduto] = useState<Product | undefined>(undefined);
   const [quantidade, setQuantidade] = useState<number>(1);
 
   useEffect(() => {

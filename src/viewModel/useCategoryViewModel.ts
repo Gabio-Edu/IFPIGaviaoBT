@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { simularConsultaProdutosPorCategoria } from "../data/mockDatabase";
+import { Product } from "@/model/entities/Product";
 
 export function useCategoryViewModel(id: string | string[] | undefined) {
   const [carregando, setCarregando] = useState<boolean>(true);
-  const [produtos, setProdutos] = useState<any[]>([]);
+  const [produtos, setProdutos] = useState<Product[]>([]);
 
   const nomeCategoria =
     id === "bebidas"

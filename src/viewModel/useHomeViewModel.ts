@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { simularConsultaCategorias } from "../data/mockDatabase";
+import { Category } from "@/model/entities/Category";
 
 export function useHomeViewModel() {
   const [carregando, setCarregando] = useState<boolean>(true);
-  const [categorias, setCategorias] = useState<any[]>([]);
+  const [categorias, setCategorias] = useState<Category[]>([]);
 
   useEffect(() => {
     async function carregarDados() {
