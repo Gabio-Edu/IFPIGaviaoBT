@@ -5,7 +5,7 @@
 
 import { CategoryViewModel } from "@/viewmodel/categoriesViewModel";
 import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -19,9 +19,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function CategoryScreen() {
-  const [carregarProdutos]=CategoryViewModel.useDataSource()
-  const [push,back]=CategoryViewModel.useRooter()
-
+  const router = useRouter();
+  const sendAction = CategoryViewModel.sendAction;
   const { id } = useLocalSearchParams<{ id: string }>();
 
   // Estados locais controlados na própria View (Sem separação de ViewModel)
@@ -34,7 +33,10 @@ export default function CategoryScreen() {
 
   useEffect(() => {
     // Consulta direta com atraso simulado de banco de dados
-    carregarProdutos(setCarregando,setProdutos);
+    sendAction({
+      action: "get-data",
+      contentRequest: [id, setCarregando, setProdutos],
+    });
   }, [id]);
 
   // Função auxiliar de formatação de moeda dentro do arquivo da tela
@@ -52,7 +54,9 @@ export default function CategoryScreen() {
             <TouchableOpacity
               activeOpacity={0.7}
               style={styles.botaoVoltar}
-              onPress={() => back()}
+              onPress={() =>
+                sendAction({ action: "back-page", contentRequest: router })
+              }
             >
               <Ionicons name="chevron-back" size={24} color="#ffffff" />
               <Text style={styles.textoVoltar}>Início</Text>
@@ -90,7 +94,12 @@ export default function CategoryScreen() {
             <TouchableOpacity
               activeOpacity={0.85}
               style={styles.cardItem}
-              onPress={() => push(`/item/${item.id}` as any)}
+              onPress={() =>
+                sendAction({
+                  action: "push-page",
+                  contentRequest: [router, `/item/${item.id}`],
+                })
+              }
             >
               {/* Miniatura do Produto */}
               <Image
@@ -221,4 +230,3 @@ const styles = StyleSheet.create({
 function carregarProdutos() {
   throw new Error("Function not implemented.");
 }
-

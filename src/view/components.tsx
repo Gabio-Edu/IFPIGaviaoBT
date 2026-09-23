@@ -1,44 +1,46 @@
-import ICategories from "@/model/entities/Icategories"
-import { HomeViewModel } from "@/viewmodel/homeViewModel"
-import { Ionicons } from "@expo/vector-icons"
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import ICategories from "@/model/entities/Icategories";
+import { HomeViewModel } from "@/viewmodel/homeViewModel";
+import { Ionicons } from "@expo/vector-icons";
+import { ImperativeRouter } from "expo-router";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-type ItemProps={
-    cat:ICategories
-}
+type ItemProps = {
+  cat: ICategories;
+  router: ImperativeRouter;
+};
 
-export const Item=(props:ItemProps)=>{
-    const [pushState] = HomeViewModel.useRooter();
-    
-    return (
-              <TouchableOpacity
-                key={props.cat.id}
-                activeOpacity={0.88}
-                style={[styles.cardCategoria, { borderColor: props.cat.corBorda }]}
-                onPress={() => pushState(`/category/${props.cat.id}` as any)}
-              >
-                {/* Imagem de Capa da Categoria */}
-                <Image
-                  source={props.cat.imagem}
-                  style={styles.imagemCategoria}
-                  resizeMode="cover"
-                />
+export const Item = (props: ItemProps) => {
+  const sendAction = HomeViewModel.sendAction;
 
-                {/* Rodapé do Card com Nome e Seta */}
-                <View style={styles.rodapeCard}>
-                  <Text style={styles.nomeCategoria}>{props.cat.nome}</Text>
-                  <Ionicons
-                    name="arrow-forward"
-                    size={20}
-                    color={props.cat.corSeta}
-                  />
-                </View>
-              </TouchableOpacity>
-            )
-}
+  return (
+    <TouchableOpacity
+      key={props.cat.id}
+      activeOpacity={0.88}
+      style={[styles.cardCategoria, { borderColor: props.cat.corBorda }]}
+      onPress={() =>
+        sendAction({
+          action: "push-page",
+          contentRequest: [props.router, `/category/${props.cat.id}`],
+        })
+      }
+    >
+      {/* Imagem de Capa da Categoria */}
+      <Image
+        source={props.cat.imagem}
+        style={styles.imagemCategoria}
+        resizeMode="cover"
+      />
 
-const styles=StyleSheet.create({
-    
+      {/* Rodapé do Card com Nome e Seta */}
+      <View style={styles.rodapeCard}>
+        <Text style={styles.nomeCategoria}>{props.cat.nome}</Text>
+        <Ionicons name="arrow-forward" size={20} color={props.cat.corSeta} />
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
   cardCategoria: {
     flex: 1,
     backgroundColor: "#ffffff",
@@ -68,4 +70,4 @@ const styles=StyleSheet.create({
     fontWeight: "bold",
     color: "#1a1a1a",
   },
-})
+});

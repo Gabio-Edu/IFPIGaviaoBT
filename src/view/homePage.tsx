@@ -4,6 +4,7 @@
 // ============================================================================
 
 import { HomeViewModel } from "@/viewmodel/homeViewModel";
+import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -11,22 +12,25 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Item } from "./components";
 
 export default function HomeScreen() {
-  const [getDataState]=HomeViewModel.useDataSource()
+  const sendAction = HomeViewModel.sendAction;
+  const router = useRouter();
+
   // Estados gerenciados diretamente na View (Sem ViewModel)
   const [carregando, setCarregando] = useState<boolean>(true);
   const [categorias, setCategorias] = useState<any[]>([]);
 
   useEffect(() => {
     // Busca direta do banco simulado com delay assíncrono
-    getDataState(setCarregando,setCategorias)
-
-    
+    sendAction({
+      action: "get-data",
+      contentRequest: [setCarregando, setCategorias],
+    });
   }, []);
 
   return (
@@ -66,7 +70,9 @@ export default function HomeScreen() {
           </View>
         ) : (
           <View style={styles.gridCategorias}>
-            {categorias.map((cat) => <Item key={cat.id} cat={cat}/>)}
+            {categorias.map((cat) => (
+              <Item key={cat.id} cat={cat} router={router} />
+            ))}
           </View>
         )}
       </ScrollView>

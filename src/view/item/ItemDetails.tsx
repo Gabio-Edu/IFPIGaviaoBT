@@ -5,7 +5,7 @@
 
 import { ItemViewModel } from "@/viewmodel/itemViewModel";
 import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -19,9 +19,9 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ItemDetailScreen() {
-  const [backPage]=ItemViewModel.useRooter()
-  const [getItem]=ItemViewModel.useDataSource()
+  const sendAction = ItemViewModel.sendAction;
   const { id } = useLocalSearchParams<{ id: string }>();
+  const router = useRouter();
 
   // Estados locais controlados diretamente na tela (Sem ViewModel)
   const [carregando, setCarregando] = useState<boolean>(true);
@@ -30,7 +30,10 @@ export default function ItemDetailScreen() {
 
   useEffect(() => {
     // Consulta direta ao banco de dados com simulação de delay
-    getItem(setCarregando,setProduto)
+    sendAction({
+      action: "get-data",
+      contentRequest: [id, setCarregando, setProduto],
+    });
   }, [id]);
 
   // Lógica de negócio de incremento/decremento embutida diretamente na View
@@ -57,7 +60,12 @@ export default function ItemDetailScreen() {
             <TouchableOpacity
               activeOpacity={0.7}
               style={styles.botaoVoltar}
-              onPress={backPage}
+              onPress={() =>
+                sendAction({
+                  action: "back-page",
+                  contentRequest: null,
+                })
+              }
             >
               <Ionicons name="chevron-back" size={24} color="#ffffff" />
               <Text style={styles.textoVoltar}>Voltar</Text>
@@ -166,7 +174,12 @@ export default function ItemDetailScreen() {
             <TouchableOpacity
               activeOpacity={0.88}
               style={styles.btnVoltarCardapio}
-              onPress={backPage}
+              onPress={() =>
+                sendAction({
+                  action: "back-page",
+                  contentRequest: router,
+                })
+              }
             >
               <Text style={styles.textoBtnVoltar}>Voltar ao Cardápio</Text>
             </TouchableOpacity>
@@ -409,4 +422,3 @@ const styles = StyleSheet.create({
 function carregarDetalhes() {
   throw new Error("Function not implemented.");
 }
-
