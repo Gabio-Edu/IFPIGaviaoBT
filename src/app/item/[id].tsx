@@ -4,6 +4,7 @@
 // ============================================================================
 
 import React from "react";
+
 import {
   View,
   Text,
@@ -13,19 +14,29 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+
 import { useItemViewModel } from "@/viewModel/useItemViewModel";
 import { QuantityControl } from "@/view/components/QuantityControl";
 import { BackToMenuButton } from "@/view/components/BackToMenuButton";
+import { ProductDetails } from "@/view/components/ProductDetails";
 
 export default function ItemDetailScreen() {
   const router = useRouter();
+
   const { id } = useLocalSearchParams<{ id: string }>();
 
-  const { carregando, produto, quantidade, decrementarQuantidade, incrementarQuantidade, formatarPreco }
-    = useItemViewModel(id);
+  const {
+    carregando,
+    produto,
+    quantidade,
+    decrementarQuantidade,
+    incrementarQuantidade,
+    formatarPreco,
+  } = useItemViewModel(id);
 
   return (
     <View style={styles.tela}>
@@ -33,17 +44,29 @@ export default function ItemDetailScreen() {
       <View style={styles.cabecalhoContainer}>
         <SafeAreaView edges={["top"]}>
           <View style={styles.cabecalhoLinha}>
+            {/* Botão de voltar */}
             <TouchableOpacity
               activeOpacity={0.7}
               style={styles.botaoVoltar}
               onPress={() => router.back()}
             >
-              <Ionicons name="chevron-back" size={24} color="#ffffff" />
-              <Text style={styles.textoVoltar}>Voltar</Text>
+              <Ionicons
+                name="chevron-back"
+                size={24}
+                color="#ffffff"
+              />
+
+              <Text style={styles.textoVoltar}>
+                Voltar
+              </Text>
             </TouchableOpacity>
 
-            <Text style={styles.tituloHeader}>Detalhes do Lanche</Text>
+            {/* Título central */}
+            <Text style={styles.tituloHeader}>
+              Detalhes do Lanche
+            </Text>
 
+            {/* Espaçador para manter o título centralizado */}
             <View style={styles.espacadorHeader} />
           </View>
         </SafeAreaView>
@@ -52,8 +75,14 @@ export default function ItemDetailScreen() {
       {/* CONTEÚDO PRINCIPAL COM ROLAGEM */}
       {carregando ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#501673" />
-          <Text style={styles.loadingTexto}>Carregando detalhes do item...</Text>
+          <ActivityIndicator
+            size="large"
+            color="#501673"
+          />
+
+          <Text style={styles.loadingTexto}>
+            Carregando detalhes do item...
+          </Text>
         </View>
       ) : produto ? (
         <ScrollView
@@ -67,76 +96,54 @@ export default function ItemDetailScreen() {
               style={styles.fotoGrande}
               resizeMode="cover"
             />
-            {/* Etiqueta Sobreposta no Canto Inferior da Foto */}
+
+            {/* Etiqueta sobreposta no canto inferior da foto */}
             <View style={styles.overlayFoto}>
-              <Text style={styles.overlayTexto}>{produto.nome}</Text>
+              <Text style={styles.overlayTexto}>
+                {produto.nome}
+              </Text>
             </View>
           </View>
 
-          {/* ÁREA DE DETALHES E INFORMAÇÕES */}
-          <View style={styles.infoSecao}>
-            {/* Título do Produto e Badge de Preço */}
-            <View style={styles.tituloPrecoLinha}>
-              <Text style={styles.nomeProduto}>{produto.nome}</Text>
-              <View style={styles.badgePreco}>
-                <Text style={styles.textoBadgePreco}>
-                  {formatarPreco(produto.preco)}
-                </Text>
-              </View>
-            </View>
-
-            {/* Tag da Categoria */}
-            <View style={styles.categoriaTag}>
-              <Text style={styles.textoCategoriaTag}>
-                {produto.categoriaNome || "Lanche"}
-              </Text>
-            </View>
-
-            {/* Descrição do Produto */}
-            <Text style={styles.descricaoTexto}>{produto.descricao}</Text>
-
-            {/* Informações Nutricionais */}
-            <View style={styles.nutricaoLinha}>
-              <Text style={styles.nutricaoItem}>
-                Proteínas:{" "}
-                <Text style={styles.nutricaoValor}>{produto.proteinas}</Text>
-              </Text>
-              <Text style={styles.nutricaoItem}>
-                Carboidratos:{" "}
-                <Text style={styles.nutricaoValor}>{produto.carboidratos}</Text>
-              </Text>
-              <Text style={styles.nutricaoItem}>
-                Gorduras:{" "}
-                <Text style={styles.nutricaoValor}>{produto.gorduras}</Text>
-              </Text>
-            </View>
-
-            {/* Controle de Quantidade */}
+          {/* DETALHES DO PRODUTO */}
+          <ProductDetails
+            nome={produto.nome}
+            preco={formatarPreco(produto.preco)}
+            categoriaNome={produto.categoriaNome}
+            descricao={produto.descricao}
+            proteinas={produto.proteinas}
+            carboidratos={produto.carboidratos}
+            gorduras={produto.gorduras}
+          >
             <QuantityControl
               quantidade={quantidade}
               decrementarQuantidade={decrementarQuantidade}
               incrementarQuantidade={incrementarQuantidade}
             />
 
-            {/* Botão Voltar ao Cardápio */}
             <BackToMenuButton onPress={() => router.back()} />
-          </View>
+          </ProductDetails>
+
+          {/* BOTÃO VOLTAR AO CARDÁPIO */}
         </ScrollView>
       ) : (
         <View style={styles.erroContainer}>
-          <Text style={styles.erroTexto}>Item não encontrado.</Text>
+          <Text style={styles.erroTexto}>
+            Item não encontrado.
+          </Text>
         </View>
       )}
     </View>
   );
 }
 
-// Estilos Big Tripe misturados diretamente no arquivo da tela
+// Estilos que continuam pertencendo à tela
 const styles = StyleSheet.create({
   tela: {
     flex: 1,
     backgroundColor: "#ffffff",
   },
+
   cabecalhoContainer: {
     backgroundColor: "#501673",
     paddingBottom: 16,
@@ -147,36 +154,43 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 4,
   },
+
   cabecalhoLinha: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingTop: 8,
   },
+
   botaoVoltar: {
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 4,
     paddingRight: 8,
   },
+
   textoVoltar: {
     color: "#ffffff",
     fontSize: 16,
     fontWeight: "600",
     marginLeft: 2,
   },
+
   tituloHeader: {
     color: "#ffffff",
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
   },
+
   espacadorHeader: {
     width: 60,
   },
+
   conteudoScroll: {
     paddingBottom: 40,
   },
+
   cardFoto: {
     marginHorizontal: 16,
     marginTop: 16,
@@ -190,10 +204,12 @@ const styles = StyleSheet.create({
     elevation: 3,
     position: "relative",
   },
+
   fotoGrande: {
     width: "100%",
     height: 240,
   },
+
   overlayFoto: {
     position: "absolute",
     bottom: 10,
@@ -203,97 +219,33 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 6,
   },
+
   overlayTexto: {
     color: "#ffffff",
     fontSize: 13,
     fontWeight: "500",
   },
-  infoSecao: {
-    paddingHorizontal: 20,
-    paddingTop: 18,
-  },
-  tituloPrecoLinha: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    gap: 12,
-  },
-  nomeProduto: {
-    flex: 1,
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#1a1a1a",
-    lineHeight: 30,
-  },
-  badgePreco: {
-    backgroundColor: "#248232",
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  textoBadgePreco: {
-    color: "#ffffff",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  categoriaTag: {
-    alignSelf: "flex-end",
-    marginTop: 6,
-    backgroundColor: "#f1f3f5",
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: "#e2e6ea",
-  },
-  textoCategoriaTag: {
-    fontSize: 12,
-    color: "#495057",
-    fontWeight: "600",
-  },
-  descricaoTexto: {
-    marginTop: 16,
-    fontSize: 16,
-    color: "#343a40",
-    lineHeight: 24,
-  },
-  nutricaoLinha: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginTop: 22,
-    gap: 16,
-    paddingVertical: 10,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: "#f0f0f0",
-  },
-  nutricaoItem: {
-    fontSize: 14,
-    color: "#6c757d",
-  },
-  nutricaoValor: {
-    fontWeight: "bold",
-    color: "#1a1a1a",
-  },
+
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     paddingTop: 100,
   },
+
   loadingTexto: {
     marginTop: 12,
     fontSize: 15,
     color: "#6c757d",
   },
+
   erroContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     paddingTop: 100,
   },
+
   erroTexto: {
     fontSize: 16,
     color: "#dc3545",

@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-
+import { Product } from "@/model/entities/Product";
 type ProductCardProps = {
-  produto: any;
+  produto: Product;
   onPress: () => void;
   formatarPreco: (valor: number) => string;
 };
