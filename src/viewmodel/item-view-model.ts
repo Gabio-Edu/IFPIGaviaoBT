@@ -1,4 +1,4 @@
-import { ItemDataSource } from "@/model/dataSource/ItemDataSource";
+import { ItemDataSource } from "@/model/dataSource/Item-data-source";
 import { ImperativeRouter } from "expo-router";
 import { Actions } from "./types";
 

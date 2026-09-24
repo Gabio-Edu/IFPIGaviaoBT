@@ -2,7 +2,7 @@ import {
   simularConsultaProdutoPorId,
   simularConsultaProdutosPorCategoria,
 } from "@/data/mockDatabase";
-import IItem from "../entities/IItem";
+import IItem from "../entities/I-Item";
 
 export class ItemDataSource {
   constructor() {}

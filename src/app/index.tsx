@@ -1,2 +1,2 @@
-import HomeScreen from "@/view/homePage";
+import HomeScreen from "@/view/home-page";
 export default HomeScreen;

@@ -3,7 +3,7 @@
 // Tela de Categoria: Listagem de Itens por Categoria selecionada
 // ============================================================================
 
-import { CategoryViewModel } from "@/viewmodel/categoriesViewModel";
+import { CategoryViewModel } from "@/viewmodel/categories-view-model";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";

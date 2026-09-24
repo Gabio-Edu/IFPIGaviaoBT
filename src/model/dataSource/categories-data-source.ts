@@ -1,5 +1,5 @@
 import { simularConsultaCategorias } from "@/data/mockDatabase";
-import ICategories from "../entities/Icategories";
+import ICategories from "../entities/I-categories";
 
 
 export class CategoriaDataSource{

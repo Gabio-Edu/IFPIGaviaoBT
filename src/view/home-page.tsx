@@ -3,13 +3,13 @@
 // Tela Inicial: Apresentação das Categorias (Comidas e Bebidas)
 // ============================================================================
 
-import { HomeViewModel } from "@/viewmodel/homeViewModel";
+import { HomeViewModel } from "@/viewmodel/home-view-model";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
-  ScrollView,
-  StyleSheet,
-  View
+    ScrollView,
+    StyleSheet,
+    View
 } from "react-native";
 import { Cabecalho, Item, TelaCarregamento } from "./components";
 

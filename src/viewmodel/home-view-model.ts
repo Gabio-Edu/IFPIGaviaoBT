@@ -1,4 +1,4 @@
-import { CategoriaDataSource } from "@/model/dataSource/CategoriesDataSource";
+import { CategoriaDataSource } from "@/model/dataSource/categories-data-source";
 import { ImperativeRouter } from "expo-router";
 import { Actions } from "./types";
 

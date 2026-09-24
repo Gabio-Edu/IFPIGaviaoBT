@@ -1,14 +1,14 @@
-import ICategories from "@/model/entities/Icategories";
-import { HomeViewModel } from "@/viewmodel/homeViewModel";
+import ICategories from "@/model/entities/I-categories";
+import { HomeViewModel } from "@/viewmodel/home-view-model";
 import { Ionicons } from "@expo/vector-icons";
 import { ImperativeRouter } from "expo-router";
 import {
-  ActivityIndicator,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    Image,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 ///
