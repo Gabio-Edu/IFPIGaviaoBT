@@ -1,73 +1,95 @@
-# 🦅 IFPI Gavião - Cardápio Digital (Versão Big Tripe)
+# 🦅 IFPI Gavião — Cardápio Digital
 
-> **Atividade Prática de Programação para Dispositivos Móveis (PDM) - IFPI**  
+> Atividade prática de Programação para Dispositivos Móveis (PDM) — IFPI
 > **Professor:** Iallen Gábio de Sousa Santos
 
+## Sobre o projeto
+
+O **IFPI Gavião** é um aplicativo de cardápio digital desenvolvido com React Native, Expo SDK 57 e TypeScript. O projeto demonstra a organização **MVVM Simplificado** trabalhada na disciplina de PDM.
+
+O sufixo `BT` no nome do repositório é parte do nome original do projeto, que começou como exemplo do padrão Big Tripe. A aplicação foi refatorada para separar rotas, interface, lógica de tela e acesso aos dados, preservando o visual e o comportamento do cardápio.
+
+## Arquitetura
+
+O fluxo das telas segue:
+
+```text
+App (rotas Expo Router)
+  ↓
+View (interface)
+  ↓
+ViewModel (estado, ações, parâmetros e navegação)
+  ↓
+Model (tipos e DataSources)
+  ↓
+mockDatabase (dados e consultas assíncronas)
+```
+
+- **App — `src/app/`:** contém as rotas do Expo Router e o layout global.
+- **View — `src/view/`:** contém JSX e estilos. As Views recebem o estado e as ações da ViewModel.
+- **ViewModel — `src/viewmodel/`:** cada tela tem um Custom Hook `useTelaViewModel()`. Os hooks controlam estado, carregamento, consulta, parâmetros da rota e navegação, e retornam `[state, actions]`.
+- **Model — `src/model/`:** define os tipos `Categoria` e `Produto` e os DataSources usados pelas ViewModels.
+- **Dados simulados — `src/data/mockDatabase.ts`:** mantém as categorias e os produtos do cardápio. As consultas são assíncronas e preservam o atraso de 600 ms.
+
+A arquitetura permanece simplificada: não há Repository, Use Case, Infrastructure ou injeção de dependências.
+
+### Estrutura principal
+
+```text
+src/
+├── app/
+│   ├── _layout.tsx
+│   ├── index.tsx
+│   ├── category/
+│   │   └── [id].tsx
+│   └── item/
+│       └── [id].tsx
+├── model/
+│   ├── categoria.ts
+│   ├── categoria-data-source.ts
+│   ├── produto.ts
+│   └── produto-data-source.ts
+├── view/
+│   ├── home-screen.tsx
+│   ├── category-screen.tsx
+│   └── item-screen.tsx
+└── viewmodel/
+    ├── use-home-view-model.ts
+    ├── use-category-view-model.ts
+    └── use-item-view-model.ts
+```
+
+## Fluxo do aplicativo
+
+1. **Home:** apresenta as categorias Comidas e Bebidas. Toque em uma categoria para abrir seus produtos.
+2. **Category:** apresenta os produtos da categoria. Toque em um produto para abrir seus detalhes.
+3. **Item:** apresenta imagem, descrição, preço e informações nutricionais. Os controles alteram a quantidade, que não pode ficar abaixo de 1.
+
+As consultas mostram um indicador de carregamento enquanto aguardam o mock. A tela Category mantém seu estado vazio e a tela Item informa quando um produto não é encontrado.
+
+## Como executar
+
+Clone o repositório e instale as dependências:
+
+```bash
+git clone https://github.com/Nilson-Rodrigo/IFPIGaviaoBT.git
+cd IFPIGaviaoBT
+npm install
+```
+
+Inicie o Expo:
+
+```bash
+npx expo start
+```
+
+Abra o aplicativo com o Expo Go usando o QR Code, pressione `a` para iniciar no emulador Android ou `w` para abrir a versão web.
+
+## Objetivo acadêmico
+
+A refatoração demonstra a separação de responsabilidades do MVVM Simplificado: as rotas encaminham para as Views, as Views apresentam a interface, as ViewModels controlam estado e ações, e o Model concentra os tipos e o acesso aos dados.
+
 ---
 
-## 📱 Sobre o Projeto
-
-O **IFPI Gavião** é um aplicativo de cardápio digital desenvolvido com **React Native**, **Expo (v57)** e **TypeScript** para uma lanchonete fictícia institucional.
-
-O sufixo **"BT"** no nome do projeto refere-se ao padrão **"Big Tripe"** — uma referência bem-humorada à **ausência de padrão de projeto**, onde o desenvolvedor implementa tudo em um único arquivo (ou, no caso do Expo Router, tudo concentrado em um único arquivo por tela):
-- Acesso a dados e simulação de banco de dados diretamente na tela;
-- Regras de negócio e cálculos de apresentação misturados com a interface;
-- Gerenciamento direto de estado e controle de loading na própria View;
-- Ausência de separação arquitetural e estilização monolítica com `StyleSheet`.
-
-O banco de dados da aplicação é local, mas foi construído para simular um pequeno atraso assíncrono para entregar os dados, comportando-se como um banco de dados ou API de verdade.
-
----
-
-## 🎯 Atividade Prática: Refatoração para o MVVM Simplificado
-
-Esta aplicação serve como base para a atividade prática da disciplina.
-
-A atividade consiste em:
-1. Fazer um **fork** deste repositório;
-2. Realizar uma **refatoração completa** do projeto para adequá-lo ao **MVVM Simplificado**, seguindo rigorosamente as recomendações, padrões e convenções apresentados nas aulas e no material didático (livro da disciplina de PDM);
-3. Garantir que a aplicação mantenha a mesma identidade visual, comportamento e simulação assíncrona do banco de dados após a refatoração.
-
----
-
-## 🚀 Como Executar o Projeto
-
-1. **Clone o repositório (ou o seu Fork):**
-   ```bash
-   git clone https://github.com/SEU_USUARIO/IFPIGaviaoBT.git
-   cd IFPIGaviaoBT
-   ```
-
-2. **Instale as dependências:**
-   ```bash
-   npm install
-   ```
-
-3. **Inicie o servidor de desenvolvimento do Expo:**
-   ```bash
-   npx expo start
-   ```
-
-4. **Abra o aplicativo:**
-   - No celular físico usando o app **Expo Go** (leitura do QR Code).
-   - No emulador Android (`a`) ou simulador iOS (`i`).
-   - No navegador (`w`).
-
----
-
-## 📤 Instruções para Envio da Atividade
-
-1. Faça o **Fork** deste repositório para o seu perfil pessoal no GitHub.
-2. Clone o seu fork na sua máquina de desenvolvimento.
-3. Crie uma branch para o seu trabalho:
-   ```bash
-   git checkout -b feature/refactor-mvvm
-   ```
-4. Realize a refatoração completa para o **MVVM Simplificado**.
-5. Faça commits frequentes e bem descritos.
-6. Envie suas alterações para o seu GitHub e submeta o link do repositório conforme as orientações do professor no Google Classroom / SIGAA.
-
----
-
-*IFPI - Campus Piripiri*  
+*IFPI — Campus Piripiri*
 *Tecnologia em Análise e Desenvolvimento de Sistemas (TADS)*
