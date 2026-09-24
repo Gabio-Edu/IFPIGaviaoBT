@@ -18,6 +18,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useItemViewModel } from "@/viewModel/useItemViewModel";
 import { QuantityControl } from "@/view/components/QuantityControl";
+import { BackToMenuButton } from "@/view/components/BackToMenuButton";
 
 export default function ItemDetailScreen() {
   const router = useRouter();
@@ -118,13 +119,7 @@ export default function ItemDetailScreen() {
             />
 
             {/* Botão Voltar ao Cardápio */}
-            <TouchableOpacity
-              activeOpacity={0.88}
-              style={styles.btnVoltarCardapio}
-              onPress={() => router.back()}
-            >
-              <Text style={styles.textoBtnVoltar}>Voltar ao Cardápio</Text>
-            </TouchableOpacity>
+            <BackToMenuButton onPress={() => router.back()} />
           </View>
         </ScrollView>
       ) : (
@@ -281,23 +276,6 @@ const styles = StyleSheet.create({
   nutricaoValor: {
     fontWeight: "bold",
     color: "#1a1a1a",
-  },
-  btnVoltarCardapio: {
-    backgroundColor: "#501673",
-    borderRadius: 12,
-    paddingVertical: 15,
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  textoBtnVoltar: {
-    color: "#ffffff",
-    fontSize: 16,
-    fontWeight: "bold",
   },
   loadingContainer: {
     flex: 1,
