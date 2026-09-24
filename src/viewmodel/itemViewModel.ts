@@ -36,13 +36,13 @@ export class ItemViewModel {
   static sendAction(action: Actions): void {
     switch (action.action) {
       case "back-page":
-        ItemViewModel.useRooter(action.contentRequest)[0]();
+        ItemViewModel.useRooter(action.contentRequest.router)[0]();
         break;
       case "get-data":
         ItemViewModel.useDataSource()[0](
-          action.contentRequest[0],
-          action.contentRequest[1],
-          action.contentRequest[2],
+          action.contentRequest.contentId!,
+          action.contentRequest.state,
+          action.contentRequest.localMemoState,
         );
         break;
       case "push-page":

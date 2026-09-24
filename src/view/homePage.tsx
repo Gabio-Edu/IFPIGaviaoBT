@@ -7,15 +7,11 @@ import { HomeViewModel } from "@/viewmodel/homeViewModel";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
-  ActivityIndicator,
-  Image,
   ScrollView,
   StyleSheet,
-  Text,
-  View,
+  View
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Item } from "./components";
+import { Cabecalho, Item, TelaCarregamento } from "./components";
 
 export default function HomeScreen() {
   const sendAction = HomeViewModel.sendAction;
@@ -29,7 +25,11 @@ export default function HomeScreen() {
     // Busca direta do banco simulado com delay assíncrono
     sendAction({
       action: "get-data",
-      contentRequest: [setCarregando, setCategorias],
+      contentRequest: {
+        router: router,
+        state: setCarregando,
+        localMemoState: setCategorias,
+      },
     });
   }, []);
 
@@ -37,25 +37,7 @@ export default function HomeScreen() {
     <View style={styles.tela}>
       {/* CABEÇALHO ROXO COM BORDAS ARREDONDADAS */}
       <View style={styles.cabecalhoContainer}>
-        <SafeAreaView edges={["top"]}>
-          <View style={styles.cabecalhoConteudo}>
-            {/* Linha com Ícone do Gavião e Nome da Lanchonete */}
-            <View style={styles.logoLinha}>
-              <Image
-                source={require("../../assets/images/menu/gaviao-logo.png")}
-                style={styles.logoGaviao}
-                resizeMode="contain"
-              />
-              <Text style={styles.tituloHeader}>IFPI Gavião</Text>
-            </View>
-
-            {/* Mensagem de Boas-Vindas */}
-            <Text style={styles.subtituloTexto}>
-              O que você deseja pedir hoje?
-            </Text>
-            <Text style={styles.subtituloDestaque}>Escolha uma categoria:</Text>
-          </View>
-        </SafeAreaView>
+        <Cabecalho />
       </View>
 
       {/* ÁREA DE CONTEÚDO */}
@@ -64,10 +46,7 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
       >
         {carregando ? (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#501673" />
-            <Text style={styles.loadingTexto}>Consultando cardápio...</Text>
-          </View>
+          <TelaCarregamento />
         ) : (
           <View style={styles.gridCategorias}>
             {categorias.map((cat) => (
@@ -98,56 +77,10 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 6,
   },
-  cabecalhoConteudo: {
-    alignItems: "center",
-    paddingTop: 12,
-  },
-  logoLinha: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 14,
-  },
-  logoGaviao: {
-    width: 38,
-    height: 38,
-    marginRight: 10,
-  },
-  tituloHeader: {
-    fontSize: 26,
-    fontWeight: "bold",
-    color: "#ffffff",
-    letterSpacing: 0.3,
-  },
-  subtituloTexto: {
-    fontSize: 15,
-    color: "#ffffff",
-    textAlign: "center",
-    opacity: 0.95,
-    lineHeight: 22,
-  },
-  subtituloDestaque: {
-    fontSize: 15,
-    fontWeight: "600",
-    color: "#ffffff",
-    textAlign: "center",
-    lineHeight: 22,
-  },
   conteudoScroll: {
     paddingVertical: 28,
     paddingHorizontal: 16,
     flexGrow: 1,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 60,
-  },
-  loadingTexto: {
-    marginTop: 12,
-    fontSize: 15,
-    color: "#6c757d",
   },
   gridCategorias: {
     flexDirection: "row",

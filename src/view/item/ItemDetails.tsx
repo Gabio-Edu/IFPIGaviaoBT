@@ -32,7 +32,12 @@ export default function ItemDetailScreen() {
     // Consulta direta ao banco de dados com simulação de delay
     sendAction({
       action: "get-data",
-      contentRequest: [id, setCarregando, setProduto],
+      contentRequest: {
+        router: router,
+        contentId: id,
+        state: setCarregando,
+        localMemoState: setProduto,
+      },
     });
   }, [id]);
 
@@ -63,7 +68,7 @@ export default function ItemDetailScreen() {
               onPress={() =>
                 sendAction({
                   action: "back-page",
-                  contentRequest: null,
+                  contentRequest: { router: router },
                 })
               }
             >
@@ -177,7 +182,7 @@ export default function ItemDetailScreen() {
               onPress={() =>
                 sendAction({
                   action: "back-page",
-                  contentRequest: router,
+                  contentRequest: { router: router },
                 })
               }
             >

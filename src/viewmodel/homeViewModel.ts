@@ -33,17 +33,18 @@ export class HomeViewModel {
   static sendAction(action: Actions): void {
     switch (action.action) {
       case "push-page":
-        HomeViewModel.useRooter(action.contentRequest[0])[0](
-          action.contentRequest[1],
+        HomeViewModel.useRooter(action.contentRequest.router!)[0](
+          action.contentRequest.contentId,
         );
+
         break;
       case "get-data":
         HomeViewModel.useDataSource()[0](
-          action.contentRequest[0],
-          action.contentRequest[1],
+          action.contentRequest.state,
+          action.contentRequest.localMemoState,
         );
         break;
-      case "push-page":
+      case "back-page":
       case action.action:
         break;
     }

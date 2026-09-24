@@ -8,7 +8,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
-  ActivityIndicator,
   FlatList,
   Image,
   StyleSheet,
@@ -17,6 +16,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { TelaCarregamento } from "../components";
 
 export default function CategoryScreen() {
   const router = useRouter();
@@ -35,7 +35,12 @@ export default function CategoryScreen() {
     // Consulta direta com atraso simulado de banco de dados
     sendAction({
       action: "get-data",
-      contentRequest: [id, setCarregando, setProdutos],
+      contentRequest: {
+        router: router,
+        contentId: id,
+        state: setCarregando,
+        localMemoState: setProdutos,
+      },
     });
   }, [id]);
 
@@ -55,7 +60,10 @@ export default function CategoryScreen() {
               activeOpacity={0.7}
               style={styles.botaoVoltar}
               onPress={() =>
-                sendAction({ action: "back-page", contentRequest: router })
+                sendAction({
+                  action: "back-page",
+                  contentRequest: { router: router },
+                })
               }
             >
               <Ionicons name="chevron-back" size={24} color="#ffffff" />
@@ -73,10 +81,7 @@ export default function CategoryScreen() {
 
       {/* CONTEÚDO PRINCIPAL: LISTA DE PRODUTOS */}
       {carregando ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#501673" />
-          <Text style={styles.loadingTexto}>Buscando itens no banco...</Text>
-        </View>
+        <TelaCarregamento />
       ) : (
         <FlatList
           data={produtos}
@@ -97,7 +102,10 @@ export default function CategoryScreen() {
               onPress={() =>
                 sendAction({
                   action: "push-page",
-                  contentRequest: [router, `/item/${item.id}`],
+                  contentRequest: {
+                    router: router,
+                    contentId: `/item/${item.id}`,
+                  },
                 })
               }
             >

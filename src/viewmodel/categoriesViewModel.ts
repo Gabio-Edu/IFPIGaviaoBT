@@ -39,18 +39,18 @@ export class CategoryViewModel {
   static sendAction(action: Actions): void {
     switch (action.action) {
       case "back-page":
-        CategoryViewModel.useRooter(action.contentRequest)[1]();
+        CategoryViewModel.useRooter(action.contentRequest.router)[1]();
         break;
       case "get-data":
         CategoryViewModel.useDataSource()[0](
-          action.contentRequest[0],
-          action.contentRequest[1],
-          action.contentRequest[2],
+          action.contentRequest.contentId!,
+          action.contentRequest.state,
+          action.contentRequest.localMemoState,
         );
         break;
       case "push-page":
-        CategoryViewModel.useRooter(action.contentRequest[0])[0](
-          action.contentRequest[1],
+        CategoryViewModel.useRooter(action.contentRequest.router)[0](
+          action.contentRequest.contentId,
         );
       case action.action:
         break;
