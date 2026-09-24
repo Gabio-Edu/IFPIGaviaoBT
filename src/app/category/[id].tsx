@@ -3,18 +3,24 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  ActivityIndicator,
 } from "react-native";
 
-import { useLocalSearchParams, useRouter } from "expo-router";
+import {
+  useLocalSearchParams,
+  useRouter,
+} from "expo-router";
+
 import { useCategoryViewModel } from "../../viewModel/useCategoryViewModel";
+
 import { ProductCard } from "@/view/components/ProductCard";
 import { CategoryHeader } from "@/view/components/CategoryHeader";
+import { LoadingView } from "@/view/components/LoadingView";
 
 export default function CategoryScreen() {
   const router = useRouter();
 
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id } =
+    useLocalSearchParams<{ id: string }>();
 
   const {
     carregando,
@@ -31,16 +37,7 @@ export default function CategoryScreen() {
       />
 
       {carregando ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator
-            size="large"
-            color="#501673"
-          />
-
-          <Text style={styles.loadingTexto}>
-            Buscando itens no banco...
-          </Text>
-        </View>
+        <LoadingView mensagem="Buscando itens no banco..." />
       ) : (
         <FlatList
           data={produtos}
@@ -59,7 +56,9 @@ export default function CategoryScreen() {
               produto={item}
               formatarPreco={formatarPreco}
               onPress={() =>
-                router.push(`/item/${item.id}` as any)
+                router.push(
+                  `/item/${item.id}` as any
+                )
               }
             />
           )}
@@ -78,18 +77,6 @@ const styles = StyleSheet.create({
   listaConteudo: {
     padding: 16,
     paddingBottom: 32,
-  },
-
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  loadingTexto: {
-    marginTop: 12,
-    fontSize: 15,
-    color: "#6c757d",
   },
 
   vazioContainer: {
