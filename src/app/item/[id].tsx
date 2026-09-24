@@ -9,20 +9,18 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
-  Image,
   ScrollView,
   ActivityIndicator,
 } from "react-native";
 
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
 
 import { useItemViewModel } from "@/viewModel/useItemViewModel";
 import { QuantityControl } from "@/view/components/QuantityControl";
 import { BackToMenuButton } from "@/view/components/BackToMenuButton";
 import { ProductDetails } from "@/view/components/ProductDetails";
+import { ItemHeader } from "@/view/components/ItemHeader";
+import { ProductImage } from "@/view/components/ProductImage";
 
 export default function ItemDetailScreen() {
   const router = useRouter();
@@ -41,36 +39,7 @@ export default function ItemDetailScreen() {
   return (
     <View style={styles.tela}>
       {/* CABEÇALHO ROXO COM BOTÃO < VOLTAR */}
-      <View style={styles.cabecalhoContainer}>
-        <SafeAreaView edges={["top"]}>
-          <View style={styles.cabecalhoLinha}>
-            {/* Botão de voltar */}
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={styles.botaoVoltar}
-              onPress={() => router.back()}
-            >
-              <Ionicons
-                name="chevron-back"
-                size={24}
-                color="#ffffff"
-              />
-
-              <Text style={styles.textoVoltar}>
-                Voltar
-              </Text>
-            </TouchableOpacity>
-
-            {/* Título central */}
-            <Text style={styles.tituloHeader}>
-              Detalhes do Lanche
-            </Text>
-
-            {/* Espaçador para manter o título centralizado */}
-            <View style={styles.espacadorHeader} />
-          </View>
-        </SafeAreaView>
-      </View>
+      <ItemHeader onVoltar={() => router.back()} />
 
       {/* CONTEÚDO PRINCIPAL COM ROLAGEM */}
       {carregando ? (
@@ -90,20 +59,10 @@ export default function ItemDetailScreen() {
           showsVerticalScrollIndicator={false}
         >
           {/* FOTO GRANDE DO PRODUTO */}
-          <View style={styles.cardFoto}>
-            <Image
-              source={produto.imagemGrande || produto.imagem}
-              style={styles.fotoGrande}
-              resizeMode="cover"
-            />
-
-            {/* Etiqueta sobreposta no canto inferior da foto */}
-            <View style={styles.overlayFoto}>
-              <Text style={styles.overlayTexto}>
-                {produto.nome}
-              </Text>
-            </View>
-          </View>
+          <ProductImage
+            imagem={produto.imagemGrande || produto.imagem}
+            nome={produto.nome}
+          />
 
           {/* DETALHES DO PRODUTO */}
           <ProductDetails
@@ -154,43 +113,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 4,
   },
-
-  cabecalhoLinha: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingTop: 8,
-  },
-
-  botaoVoltar: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 4,
-    paddingRight: 8,
-  },
-
-  textoVoltar: {
-    color: "#ffffff",
-    fontSize: 16,
-    fontWeight: "600",
-    marginLeft: 2,
-  },
-
-  tituloHeader: {
-    color: "#ffffff",
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-
-  espacadorHeader: {
-    width: 60,
-  },
-
   conteudoScroll: {
     paddingBottom: 40,
   },
-
   cardFoto: {
     marginHorizontal: 16,
     marginTop: 16,
