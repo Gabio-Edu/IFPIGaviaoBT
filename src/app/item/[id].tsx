@@ -17,6 +17,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useItemViewModel } from "@/viewModel/useItemViewModel";
+import { QuantityControl } from "@/view/components/QuantityControl";
 
 export default function ItemDetailScreen() {
   const router = useRouter();
@@ -110,32 +111,11 @@ export default function ItemDetailScreen() {
             </View>
 
             {/* Controle de Quantidade */}
-            <View style={styles.quantidadeLinha}>
-              <Text style={styles.quantidadeLabel}>Quantidades:</Text>
-
-              <View style={styles.seletorContainer}>
-                {/* Botão Menos (Roxo) */}
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  style={styles.btnMenos}
-                  onPress={decrementarQuantidade}
-                >
-                  <Ionicons name="remove" size={20} color="#ffffff" />
-                </TouchableOpacity>
-
-                {/* Número da Quantidade */}
-                <Text style={styles.numeroQuantidade}>{quantidade}</Text>
-
-                {/* Botão Mais (Verde) */}
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  style={styles.btnMais}
-                  onPress={incrementarQuantidade}
-                >
-                  <Ionicons name="add" size={20} color="#ffffff" />
-                </TouchableOpacity>
-              </View>
-            </View>
+            <QuantityControl
+              quantidade={quantidade}
+              decrementarQuantidade={decrementarQuantidade}
+              incrementarQuantidade={incrementarQuantidade}
+            />
 
             {/* Botão Voltar ao Cardápio */}
             <TouchableOpacity
@@ -301,46 +281,6 @@ const styles = StyleSheet.create({
   nutricaoValor: {
     fontWeight: "bold",
     color: "#1a1a1a",
-  },
-  quantidadeLinha: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginTop: 24,
-    marginBottom: 26,
-  },
-  quantidadeLabel: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#1a1a1a",
-  },
-  seletorContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  btnMenos: {
-    width: 34,
-    height: 34,
-    borderRadius: 6,
-    backgroundColor: "#501673",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  numeroQuantidade: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#1a1a1a",
-    marginHorizontal: 16,
-    minWidth: 18,
-    textAlign: "center",
-  },
-  btnMais: {
-    width: 34,
-    height: 34,
-    borderRadius: 6,
-    backgroundColor: "#248232",
-    alignItems: "center",
-    justifyContent: "center",
   },
   btnVoltarCardapio: {
     backgroundColor: "#501673",

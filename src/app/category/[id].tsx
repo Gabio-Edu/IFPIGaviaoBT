@@ -72,7 +72,7 @@ export default function CategoryScreen() {
             <ProductCard
               produto={item}
               formatarPreco={formatarPreco}
-              onPress={() => router.push(`/product/${item.id}` as any)}
+              onPress={() => router.push(`/item/${item.id}` as any)}
             />
 
           )}
