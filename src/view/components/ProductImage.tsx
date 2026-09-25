@@ -5,8 +5,10 @@ import {
   Image,
 } from "react-native";
 
+import { getImageSource } from "@/data/imageMap";
+
 type ProductImageProps = {
-  imagem: any;
+  imagem: string;
   nome: string;
 };
 
@@ -17,7 +19,7 @@ export function ProductImage({
   return (
     <View style={styles.cardFoto}>
       <Image
-        source={imagem}
+        source={getImageSource(imagem)}
         style={styles.fotoGrande}
         resizeMode="cover"
       />

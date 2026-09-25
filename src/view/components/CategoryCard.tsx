@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Category } from "@/model/entities/Category";
+import { getImageSource } from "@/data/imageMap";
 
 type CategoryCardProps = {
   categoria: Category;
@@ -18,7 +19,7 @@ export function CategoryCard({
       onPress={onPress}
     >
       <Image
-        source={categoria.imagem}
+        source={getImageSource(categoria.imagem)}
         style={styles.imagemCategoria}
         resizeMode="cover"
       />

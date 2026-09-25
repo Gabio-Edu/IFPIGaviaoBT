@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Product } from "@/model/entities/Product";
+import { getImageSource } from "@/data/imageMap";
+
 type ProductCardProps = {
   produto: Product;
   onPress: () => void;
@@ -19,7 +21,7 @@ export function ProductCard({
       onPress={onPress}
     >
       <Image
-        source={produto.imagem}
+        source={getImageSource(produto.imagem)}
         style={styles.thumbnail}
         resizeMode="cover"
       />

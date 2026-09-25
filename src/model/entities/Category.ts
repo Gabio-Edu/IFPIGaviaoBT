@@ -1,7 +1,7 @@
-export interface Category {
+export type Category = {
   id: string;
   nome: string;
-  imagem: any;
+  imagem: string;
   corBorda: string;
   corSeta: string;
-}
+};

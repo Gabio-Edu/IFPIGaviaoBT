@@ -1,4 +1,4 @@
-export interface Product {
+export type Product = {
   id: string;
   categoriaId: string;
   categoriaNome: string;
@@ -8,6 +8,6 @@ export interface Product {
   proteinas: string;
   carboidratos: string;
   gorduras: string;
-  imagem: any;
-  imagemGrande: any;
-}
+  imagem: string;
+  imagemGrande: string;
+};
