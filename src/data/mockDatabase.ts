@@ -5,26 +5,29 @@
 // sem tipagem formal, repositórios ou ViewModels.
 // ============================================================================
 
+import { Category } from "../model/entities/Category";
+import { Product } from "../model/entities/Product";
+
 const DELAY_MS = 600; // Simula 600ms de latência de consulta local
 
-export const BANCO_CATEGORIAS = [
+export const BANCO_CATEGORIAS: Category[] = [
   {
     id: "comidas",
     nome: "Comidas",
     corBorda: "#501673",
     corSeta: "#501673",
-    imagem: require("../../assets/images/menu/categoria-comidas.png"),
+    imagem: "categoria-comidas",
   },
   {
     id: "bebidas",
     nome: "Bebidas",
     corBorda: "#1b873f",
     corSeta: "#1b873f",
-    imagem: require("../../assets/images/menu/categoria-bebidas.png"),
+    imagem: "categoria-bebidas",
   },
 ];
 
-export const BANCO_PRODUTOS = [
+export const BANCO_PRODUTOS: Product[] = [
   {
     id: "pastel-de-carne",
     categoriaId: "comidas",
@@ -36,9 +39,10 @@ export const BANCO_PRODUTOS = [
     proteinas: "14g",
     carboidratos: "32g",
     gorduras: "18g",
-    imagem: require("../../assets/images/menu/pastel-de-carne.png"),
-    imagemGrande: require("../../assets/images/menu/pastel-de-carne.png"),
+    imagem: "pastel-de-carne",
+    imagemGrande: "pastel-de-carne",
   },
+
   {
     id: "coxinha-de-frango",
     categoriaId: "comidas",
@@ -50,9 +54,10 @@ export const BANCO_PRODUTOS = [
     proteinas: "18g",
     carboidratos: "38g",
     gorduras: "15g",
-    imagem: require("../../assets/images/menu/coxinha-de-frango.png"),
-    imagemGrande: require("../../assets/images/menu/coxinha-de-frango.png"),
+    imagem: "coxinha-de-frango",
+    imagemGrande: "coxinha-de-frango",
   },
+
   {
     id: "cuscuz-com-ovo",
     categoriaId: "comidas",
@@ -64,9 +69,10 @@ export const BANCO_PRODUTOS = [
     proteinas: "12g",
     carboidratos: "40g",
     gorduras: "9g",
-    imagem: require("../../assets/images/menu/cuscuz-com-ovo.png"),
-    imagemGrande: require("../../assets/images/menu/cuscuz-com-ovo.png"),
+    imagem: "cuscuz-com-ovo",
+    imagemGrande: "cuscuz-com-ovo",
   },
+
   {
     id: "arrumadinho-completo",
     categoriaId: "comidas",
@@ -78,9 +84,10 @@ export const BANCO_PRODUTOS = [
     proteinas: "22g",
     carboidratos: "45g",
     gorduras: "12g",
-    imagem: require("../../assets/images/menu/arrumadinho-completo.png"),
-    imagemGrande: require("../../assets/images/menu/arrumadinho-completo-large.png"),
+    imagem: "arrumadinho-completo",
+    imagemGrande: "arrumadinho-completo-large",
   },
+
   {
     id: "suco-de-laranja",
     categoriaId: "bebidas",
@@ -92,9 +99,10 @@ export const BANCO_PRODUTOS = [
     proteinas: "2g",
     carboidratos: "26g",
     gorduras: "0g",
-    imagem: require("../../assets/images/menu/suco-de-laranja.png"),
-    imagemGrande: require("../../assets/images/menu/suco-de-laranja.png"),
+    imagem: "suco-de-laranja",
+    imagemGrande: "suco-de-laranja",
   },
+
   {
     id: "refrigerante-lata",
     categoriaId: "bebidas",
@@ -106,9 +114,10 @@ export const BANCO_PRODUTOS = [
     proteinas: "0g",
     carboidratos: "37g",
     gorduras: "0g",
-    imagem: require("../../assets/images/menu/refrigerante.png"),
-    imagemGrande: require("../../assets/images/menu/refrigerante.png"),
+    imagem: "refrigerante",
+    imagemGrande: "refrigerante",
   },
+
   {
     id: "cafe-expresso",
     categoriaId: "bebidas",
@@ -120,9 +129,10 @@ export const BANCO_PRODUTOS = [
     proteinas: "0g",
     carboidratos: "1g",
     gorduras: "0g",
-    imagem: require("../../assets/images/menu/cafe-expresso.png"),
-    imagemGrande: require("../../assets/images/menu/cafe-expresso.png"),
+    imagem: "cafe-expresso",
+    imagemGrande: "cafe-expresso",
   },
+
   {
     id: "suco-acerola",
     categoriaId: "bebidas",
@@ -134,23 +144,23 @@ export const BANCO_PRODUTOS = [
     proteinas: "1g",
     carboidratos: "15g",
     gorduras: "0g",
-    imagem: require("../../assets/images/menu/suco-acerola.png"),
-    imagemGrande: require("../../assets/images/menu/suco-acerola.png"),
+    imagem: "suco-acerola",
+    imagemGrande: "suco-acerola",
   },
 ];
 
 // Funções de consulta com simulação de delay assíncrono (simulando IO de banco de dados)
-export async function simularConsultaCategorias() {
+export async function simularConsultaCategorias(): Promise<Category[]> {
   await new Promise((resolve) => setTimeout(resolve, DELAY_MS));
   return [...BANCO_CATEGORIAS];
 }
 
-export async function simularConsultaProdutosPorCategoria(categoriaId: string) {
+export async function simularConsultaProdutosPorCategoria(categoriaId: string): Promise<Product[]> {
   await new Promise((resolve) => setTimeout(resolve, DELAY_MS));
   return BANCO_PRODUTOS.filter((p) => p.categoriaId === categoriaId);
 }
 
-export async function simularConsultaProdutoPorId(produtoId: string) {
+export async function simularConsultaProdutoPorId(produtoId: string): Promise<Product | undefined> {
   await new Promise((resolve) => setTimeout(resolve, DELAY_MS));
   return BANCO_PRODUTOS.find((p) => p.id === produtoId);
 }
