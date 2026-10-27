@@ -1,33 +1,9 @@
-// ============================================================================
-// SIMULAÇÃO DO BANCO DE DADOS LOCAL (IFPI GAVIÃO)
-// ATENÇÃO: Este banco simula um atraso de rede/I/O assíncrono (como SQLite/API real)
-// No padrão Big Tripe, as telas importam e manipulam diretamente estas funções e dados
-// sem tipagem formal, repositórios ou ViewModels.
-// ============================================================================
+import { IProductDataSource } from "@/model/datasources/iProductDataSource";
+import { Product } from "@/model/entities/Product";
+import { DataSourceError } from "@/model/errors";
+import { atraso } from "./delay";
 
-import { Category } from "../model/entities/Category";
-import { Product } from "../model/entities/Product";
-
-const DELAY_MS = 600; // Simula 600ms de latência de consulta local
-
-export const BANCO_CATEGORIAS: Category[] = [
-  {
-    id: "comidas",
-    nome: "Comidas",
-    corBorda: "#501673",
-    corSeta: "#501673",
-    imagem: "categoria-comidas",
-  },
-  {
-    id: "bebidas",
-    nome: "Bebidas",
-    corBorda: "#1b873f",
-    corSeta: "#1b873f",
-    imagem: "categoria-bebidas",
-  },
-];
-
-export const BANCO_PRODUTOS: Product[] = [
+const BANCO_PRODUTOS: Product[] = [
   {
     id: "pastel-de-carne",
     categoriaId: "comidas",
@@ -149,18 +125,22 @@ export const BANCO_PRODUTOS: Product[] = [
   },
 ];
 
-// Funções de consulta com simulação de delay assíncrono (simulando IO de banco de dados)
-export async function simularConsultaCategorias(): Promise<Category[]> {
-  await new Promise((resolve) => setTimeout(resolve, DELAY_MS));
-  return [...BANCO_CATEGORIAS];
-}
+export class ProductDataSource implements IProductDataSource {
+  async listarPorCategoria(categoriaId: string): Promise<Product[]> {
+    try {
+      await atraso();
+      return BANCO_PRODUTOS.filter((p) => p.categoriaId === categoriaId);
+    } catch (erro) {
+      throw new DataSourceError("Não foi possível consultar os produtos.", erro);
+    }
+  }
 
-export async function simularConsultaProdutosPorCategoria(categoriaId: string): Promise<Product[]> {
-  await new Promise((resolve) => setTimeout(resolve, DELAY_MS));
-  return BANCO_PRODUTOS.filter((p) => p.categoriaId === categoriaId);
-}
-
-export async function simularConsultaProdutoPorId(produtoId: string): Promise<Product | undefined> {
-  await new Promise((resolve) => setTimeout(resolve, DELAY_MS));
-  return BANCO_PRODUTOS.find((p) => p.id === produtoId);
+  async buscarPorId(id: string): Promise<Product | undefined> {
+    try {
+      await atraso();
+      return BANCO_PRODUTOS.find((p) => p.id === id);
+    } catch (erro) {
+      throw new DataSourceError("Não foi possível consultar o produto.", erro);
+    }
+  }
 }

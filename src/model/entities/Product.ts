@@ -10,4 +10,4 @@ export type Product = {
   gorduras: string;
   imagem: string;
   imagemGrande: string;
-};
+};

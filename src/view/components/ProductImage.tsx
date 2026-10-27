@@ -5,7 +5,7 @@ import {
   Image,
 } from "react-native";
 
-import { getImageSource } from "@/data/imageMap";
+import { getImageSource } from "@/view/utils/imageMap";
 
 type ProductImageProps = {
   imagem: string;
@@ -68,4 +68,4 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "500",
   },
-});
+});

@@ -1,12 +1,13 @@
 import {
   View,
+  Text,
   StyleSheet,
   ScrollView,
 } from "react-native";
 
 import { useRouter } from "expo-router";
 
-import { useHomeViewModel } from "@/viewModel/useHomeViewModel";
+import { useHomeViewModel } from "@/viewmodel/useHomeViewModel";
 
 import { CategoryCard } from "@/view/components/CategoryCard";
 import { HomeHeader } from "@/view/components/HomeHeader";
@@ -18,6 +19,7 @@ const HomeView = () => {
   const {
     carregando,
     categorias,
+    erro,
   } = useHomeViewModel();
 
   return (
@@ -30,6 +32,10 @@ const HomeView = () => {
       >
         {carregando ? (
           <LoadingView mensagem="Consultando cardápio..." />
+        ) : erro ? (
+          <View style={styles.erroContainer}>
+            <Text style={styles.erroTexto}>{erro}</Text>
+          </View>
         ) : (
           <View style={styles.gridCategorias}>
             {categorias.map((categoria) => (
@@ -71,6 +77,17 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     gap: 14,
   },
+
+  erroContainer: {
+    paddingTop: 60,
+    alignItems: "center",
+  },
+
+  erroTexto: {
+    fontSize: 15,
+    color: "#dc3545",
+    textAlign: "center",
+  },
 });
 
-export default HomeView;
+export default HomeView;

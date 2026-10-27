@@ -4,4 +4,4 @@ export type Category = {
   imagem: string;
   corBorda: string;
   corSeta: string;
-};
+};

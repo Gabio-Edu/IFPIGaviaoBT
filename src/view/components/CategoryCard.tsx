@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Category } from "@/model/entities/Category";
-import { getImageSource } from "@/data/imageMap";
+import { getImageSource } from "@/view/utils/imageMap";
 
 type CategoryCardProps = {
   categoria: Category;
@@ -70,4 +70,4 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#1a1a1a",
   },
-});
+});

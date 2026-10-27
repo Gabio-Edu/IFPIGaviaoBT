@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Product } from "@/model/entities/Product";
-import { getImageSource } from "@/data/imageMap";
+import { getImageSource } from "@/view/utils/imageMap";
 
 type ProductCardProps = {
   produto: Product;
@@ -83,4 +83,4 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#333333",
   },
-});
+});

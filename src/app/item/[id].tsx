@@ -1,3 +1,3 @@
 import ItemView from "@/view/ItemView";
 
-export default ItemView;
+export default ItemView;

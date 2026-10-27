@@ -10,7 +10,7 @@ import {
   useRouter,
 } from "expo-router";
 
-import { useCategoryViewModel } from "@/viewModel/useCategoryViewModel";
+import { useCategoryViewModel } from "@/viewmodel/useCategoryViewModel";
 
 import { ProductCard } from "@/view/components/ProductCard";
 import { CategoryHeader } from "@/view/components/CategoryHeader";
@@ -26,6 +26,7 @@ const CategoryView = () => {
     carregando,
     produtos,
     nomeCategoria,
+    erro,
     formatarPreco,
   } = useCategoryViewModel(id);
 
@@ -38,6 +39,10 @@ const CategoryView = () => {
 
       {carregando ? (
         <LoadingView mensagem="Buscando itens no banco..." />
+      ) : erro ? (
+        <View style={styles.vazioContainer}>
+          <Text style={styles.erroTexto}>{erro}</Text>
+        </View>
       ) : (
         <FlatList
           data={produtos}
@@ -91,6 +96,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#8c959f",
   },
+
+  erroTexto: {
+    fontSize: 15,
+    color: "#dc3545",
+    textAlign: "center",
+  },
 });
 
-export default CategoryView;
+export default CategoryView;

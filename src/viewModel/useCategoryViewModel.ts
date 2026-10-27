@@ -1,48 +1,56 @@
 import { useEffect, useState } from "react";
-import { simularConsultaProdutosPorCategoria } from "../data/mockDatabase";
+import { menuUseCases } from "@/di/container";
 import { Product } from "@/model/entities/Product";
+import { IMenuUseCases } from "@/usecase/iMenuUseCases";
+import { formatarPreco, mensagemDeErro, normalizarParametro } from "./utils/helpers";
 
-export function useCategoryViewModel(id: string | string[] | undefined) {
+export function useCategoryViewModel(
+  id: string | string[] | undefined,
+  useCases: IMenuUseCases = menuUseCases
+) {
+  const categoriaId = normalizarParametro(id);
+
   const [carregando, setCarregando] = useState<boolean>(true);
   const [produtos, setProdutos] = useState<Product[]>([]);
-
-  const nomeCategoria =
-    id === "bebidas"
-      ? "Bebidas"
-      : id === "comidas"
-        ? "Comidas"
-        : "Cardápio";
+  const [nomeCategoria, setNomeCategoria] = useState<string>("Cardápio");
+  const [erro, setErro] = useState<string | null>(null);
 
   useEffect(() => {
-    async function carregarProdutos() {
-      if (!id) return;
+    let ativo = true;
 
+    async function carregarProdutos() {
       try {
         setCarregando(true);
+        setErro(null);
 
-        const resultado = await simularConsultaProdutosPorCategoria(
-          Array.isArray(id) ? id[0] : id
-        );
+        const resultado = await useCases.obterCardapioDaCategoria(categoriaId);
 
-        setProdutos(resultado);
-      } catch (erro) {
-        console.error("Erro ao buscar produtos da categoria:", erro);
+        if (ativo) {
+          setProdutos(resultado.produtos);
+          setNomeCategoria(resultado.nomeCategoria);
+        }
+      } catch (err) {
+        if (ativo) {
+          setProdutos([]);
+          setErro(mensagemDeErro(err, "Não foi possível carregar os itens."));
+        }
       } finally {
-        setCarregando(false);
+        if (ativo) setCarregando(false);
       }
     }
 
     carregarProdutos();
-  }, [id]);
 
-  function formatarPreco(valor: number): string {
-    return `R$ ${valor.toFixed(2).replace(".", ",")}`;
-  }
+    return () => {
+      ativo = false;
+    };
+  }, [categoriaId, useCases]);
 
   return {
     carregando,
     produtos,
     nomeCategoria,
+    erro,
     formatarPreco,
   };
 }

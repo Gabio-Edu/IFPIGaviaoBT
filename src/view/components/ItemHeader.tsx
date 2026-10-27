@@ -89,4 +89,4 @@ const styles = StyleSheet.create({
   espacadorHeader: {
     width: 60,
   },
-});
+});

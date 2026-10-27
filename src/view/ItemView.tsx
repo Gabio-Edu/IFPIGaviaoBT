@@ -10,7 +10,7 @@ import {
   useRouter,
 } from "expo-router";
 
-import { useItemViewModel } from "@/viewModel/useItemViewModel";
+import { useItemViewModel } from "@/viewmodel/useItemViewModel";
 
 import { ItemHeader } from "@/view/components/ItemHeader";
 import { ProductImage } from "@/view/components/ProductImage";
@@ -29,6 +29,7 @@ const ItemView = () => {
     carregando,
     produto,
     quantidade,
+    erro,
     decrementarQuantidade,
     incrementarQuantidade,
     formatarPreco,
@@ -75,7 +76,7 @@ const ItemView = () => {
       ) : (
         <View style={styles.erroContainer}>
           <Text style={styles.erroTexto}>
-            Item não encontrado.
+            {erro ?? "Item não encontrado."}
           </Text>
         </View>
       )}
@@ -106,4 +107,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ItemView;
+export default ItemView;
